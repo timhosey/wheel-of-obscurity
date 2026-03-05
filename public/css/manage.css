@@ -1,0 +1,154 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: system-ui, sans-serif;
+  background: #fff;
+  color: #333;
+  max-width: 800px;
+}
+
+header {
+  margin-bottom: 32px;
+}
+
+header h1 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+}
+
+header p {
+  margin: 0;
+  color: #666;
+}
+
+header a {
+  color: #0066cc;
+}
+
+section {
+  margin-bottom: 32px;
+}
+
+section h2 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+}
+
+.table-notes {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0 0 12px 0;
+}
+
+.filter-bar {
+  margin-bottom: 12px;
+}
+
+.filter-bar select {
+  padding: 6px 10px;
+  font-size: 1rem;
+}
+
+.played-cell {
+  color: #666;
+  white-space: nowrap;
+}
+
+.form-section label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.form-section label input {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  padding: 8px 10px;
+  margin-top: 4px;
+  font-size: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+button {
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+}
+
+button.secondary {
+  background: #666;
+}
+
+button:hover {
+  background: #555;
+}
+
+button.secondary:hover {
+  background: #555;
+}
+
+#spin-btn {
+  background: #0a6;
+}
+
+#spin-btn:hover {
+  background: #084;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-weight: 600;
+  background: #f5f5f5;
+}
+
+.actions-cell button {
+  padding: 4px 10px;
+  font-size: 0.875rem;
+  margin-right: 4px;
+}
+
+.empty-message {
+  color: #666;
+  padding: 12px 0;
+}
+
+.empty-message.hidden {
+  display: none;
+}
+
+.feedback {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.feedback.error {
+  color: #c00;
+}
+
+.feedback.success {
+  color: #080;
+}

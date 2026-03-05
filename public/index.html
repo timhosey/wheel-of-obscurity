@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wheel of Obscurity – Manage</title>
+  <link rel="stylesheet" href="css/manage.css">
+</head>
+<body>
+  <header>
+    <h1>Wheel of Obscurity</h1>
+    <p>Manage games for the wheel. <a href="wheel.html" target="_blank">Open wheel view</a> (for OBS).</p>
+  </header>
+  <main>
+    <section class="form-section">
+      <h2 id="form-title">Add game</h2>
+      <form id="game-form">
+        <input type="hidden" id="game-id" value="">
+        <label>
+          Game name
+          <input type="text" id="game-name" required placeholder="e.g. Celeste">
+        </label>
+        <label>
+          Platform
+          <input type="text" id="game-platform" required placeholder="e.g. PC, PlayStation">
+        </label>
+        <div class="form-actions">
+          <button type="submit" id="submit-btn">Add</button>
+          <button type="button" id="cancel-btn" class="secondary" hidden>Cancel</button>
+        </div>
+      </form>
+    </section>
+    <section class="table-section">
+      <h2>Games</h2>
+      <p class="table-notes">The wheel shows a random selection of 16 games each spin. When a game is selected, it’s marked below so you can delete it after playing.</p>
+      <div class="filter-bar">
+        <label>Filter: <select id="filter-played">
+          <option value="">All</option>
+          <option value="0">Not played</option>
+          <option value="1">Played</option>
+        </select></label>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Platform</th>
+            <th>Played</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="games-tbody">
+        </tbody>
+      </table>
+      <p id="empty-message" class="empty-message">No games yet. Add one above.</p>
+    </section>
+    <section class="spin-section">
+      <h2>Trigger spin</h2>
+      <p>Use this to spin the wheel (e.g. when the wheel is open in OBS).</p>
+      <button type="button" id="spin-btn">Spin the wheel</button>
+      <p id="spin-feedback" class="feedback"></p>
+    </section>
+  </main>
+  <script src="js/manage.js"></script>
+</body>
+</html>
