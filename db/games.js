@@ -40,11 +40,14 @@ function pickRandom() {
   return stmt.get();
 }
 
-/** Returns a random subset of games for the wheel (e.g. 16). */
-function getRandomWheelGames(count) {
-  const stmt = db.prepare(
-    'SELECT id, name, platform, selected_at FROM games ORDER BY RANDOM() LIMIT ?'
-  );
+/** Returns a random subset of games for the wheel (e.g. 16).
+ *  opts.played: true = only played, false = only unplayed, undefined = all */
+function getRandomWheelGames(count, opts = {}) {
+  let sql = 'SELECT id, name, platform, selected_at FROM games';
+  if (opts.played === true) sql += ' WHERE selected_at IS NOT NULL';
+  else if (opts.played === false) sql += ' WHERE selected_at IS NULL';
+  sql += ' ORDER BY RANDOM() LIMIT ?';
+  const stmt = db.prepare(sql);
   return stmt.all(count);
 }
 
@@ -53,6 +56,13 @@ function markSelected(id) {
   const stmt = db.prepare(
     "UPDATE games SET selected_at = datetime('now') WHERE id = ?"
   );
+  stmt.run(id);
+  return getById(id);
+}
+
+/** Clear a game's played status. */
+function markUnselected(id) {
+  const stmt = db.prepare('UPDATE games SET selected_at = NULL WHERE id = ?');
   stmt.run(id);
   return getById(id);
 }
@@ -66,4 +76,5 @@ module.exports = {
   pickRandom,
   getRandomWheelGames,
   markSelected,
+  markUnselected,
 };

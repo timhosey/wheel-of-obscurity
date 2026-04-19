@@ -32,7 +32,7 @@
     </section>
     <section class="table-section">
       <h2>Games</h2>
-      <p class="table-notes">The wheel shows a random selection of 16 games each spin. When a game is selected, it’s marked below so you can delete it after playing.</p>
+      <p class="table-notes">The wheel shows a random selection of 16 unplayed games each spin. When a game is selected it’s marked below.</p>
       <div class="filter-bar">
         <label>Filter: <select id="filter-played">
           <option value="">All</option>
@@ -59,6 +59,13 @@
       <p>Use this to spin the wheel (e.g. when the wheel is open in OBS).</p>
       <button type="button" id="spin-btn">Spin the wheel</button>
       <p id="spin-feedback" class="feedback"></p>
+      <h3>Reset wheel</h3>
+      <p>Reload the wheel with a specific game pool without spinning.</p>
+      <div class="reset-buttons">
+        <button type="button" id="reset-unplayed-btn" class="secondary">Reset with unplayed games</button>
+        <button type="button" id="reset-played-btn" class="secondary">Reset with played games</button>
+      </div>
+      <p id="reset-feedback" class="feedback"></p>
     </section>
   </main>
   <script src="js/manage.js"></script>

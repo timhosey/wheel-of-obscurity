@@ -79,6 +79,39 @@ app.delete('/api/games/:id', (req, res) => {
   }
 });
 
+// --- Mark game as unplayed ---
+app.put('/api/games/:id/unplay', (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) return res.status(400).json({ error: 'invalid id' });
+  try {
+    const row = games.markUnselected(id);
+    if (!row) return res.status(404).json({ error: 'not found' });
+    res.json(row);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// --- Reset wheel with a specific game pool ---
+app.post('/api/wheel/reset', (req, res) => {
+  const { filter } = req.body || {};
+  const opts = {};
+  if (filter === 'unplayed') opts.played = false;
+  else if (filter === 'played') opts.played = true;
+  const list = games.getRandomWheelGames(WHEEL_SIZE, opts);
+  if (list.length === 0) {
+    return res.status(400).json({ error: 'no games match the filter' });
+  }
+  lastSpin = null;
+  const payload = { games: list, lastSpin: null };
+  sseClients.forEach((client) => {
+    try {
+      client.write(`event: state\ndata: ${JSON.stringify(payload)}\n\n`);
+    } catch (_) {}
+  });
+  res.json({ games: list });
+});
+
 // --- Spin: SSE stream ---
 app.get('/api/spin/stream', (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
@@ -86,7 +119,7 @@ app.get('/api/spin/stream', (req, res) => {
   res.setHeader('Connection', 'keep-alive');
   res.flushHeaders();
 
-  const list = games.getRandomWheelGames(WHEEL_SIZE);
+  const list = games.getRandomWheelGames(WHEEL_SIZE, { played: false });
   res.write(`event: state\ndata: ${JSON.stringify({ games: list, lastSpin })}\n\n`);
 
   sseClients.push(res);
@@ -98,7 +131,7 @@ app.get('/api/spin/stream', (req, res) => {
 
 // --- Spin: trigger ---
 app.post('/api/spin', (req, res) => {
-  const wheelList = games.getRandomWheelGames(WHEEL_SIZE);
+  const wheelList = games.getRandomWheelGames(WHEEL_SIZE, { played: false });
   if (wheelList.length === 0) {
     return res.status(400).json({ error: 'no games in database' });
   }
