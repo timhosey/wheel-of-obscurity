@@ -10,6 +10,9 @@
   const emptyMessage = document.getElementById('empty-message');
   const spinBtn = document.getElementById('spin-btn');
   const spinFeedback = document.getElementById('spin-feedback');
+  const resetUnplayedBtn = document.getElementById('reset-unplayed-btn');
+  const resetPlayedBtn = document.getElementById('reset-played-btn');
+  const resetFeedback = document.getElementById('reset-feedback');
   const filterPlayed = document.getElementById('filter-played');
 
   const api = (path, options = {}) => {
@@ -50,6 +53,7 @@
             <td class="played-cell">${escapeHtml(formatPlayed(g.selected_at))}</td>
             <td class="actions-cell">
               <button type="button" data-action="edit" data-id="${g.id}">Edit</button>
+              ${g.selected_at ? `<button type="button" data-action="unplay" data-id="${g.id}">Mark unplayed</button>` : ''}
               <button type="button" data-action="delete" data-id="${g.id}">Delete</button>
             </td>
           `;
@@ -57,6 +61,9 @@
         });
         tbody.querySelectorAll('[data-action=edit]').forEach((btn) => {
           btn.addEventListener('click', () => editGame(Number(btn.dataset.id)));
+        });
+        tbody.querySelectorAll('[data-action=unplay]').forEach((btn) => {
+          btn.addEventListener('click', () => unplayGame(Number(btn.dataset.id)));
         });
         tbody.querySelectorAll('[data-action=delete]').forEach((btn) => {
           btn.addEventListener('click', () => deleteGame(Number(btn.dataset.id)));
@@ -105,6 +112,26 @@
       .catch((err) => alert(err.message));
   }
 
+  function unplayGame(id) {
+    api(`/api/games/${id}/unplay`, { method: 'PUT' })
+      .then(() => loadGames())
+      .catch((err) => alert(err.message));
+  }
+
+  function resetWheel(filter) {
+    resetFeedback.textContent = '';
+    resetFeedback.classList.remove('error', 'success');
+    api('/api/wheel/reset', { method: 'POST', body: JSON.stringify({ filter }) })
+      .then(() => {
+        resetFeedback.textContent = `Wheel reset with ${filter} games.`;
+        resetFeedback.classList.add('success');
+      })
+      .catch((err) => {
+        resetFeedback.textContent = err.message;
+        resetFeedback.classList.add('error');
+      });
+  }
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const id = gameId.value ? Number(gameId.value) : null;
@@ -143,12 +170,16 @@
       .then((data) => {
         spinFeedback.textContent = `Landed on: ${data.game.name} (${data.game.platform})`;
         spinFeedback.classList.add('success');
+        loadGames();
       })
       .catch((err) => {
         spinFeedback.textContent = err.message;
         spinFeedback.classList.add('error');
       });
   });
+
+  resetUnplayedBtn.addEventListener('click', () => resetWheel('unplayed'));
+  resetPlayedBtn.addEventListener('click', () => resetWheel('played'));
 
   loadGames();
 })();
