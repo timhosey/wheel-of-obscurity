@@ -173,9 +173,7 @@
         games = data.games;
         drawWheel();
       }
-      if (data.lastSpin) {
-        showResult(data.lastSpin.game);
-      }
+      // Do not show lastSpin on initial load — only show result after a spin in this session
     });
     es.addEventListener('spin', (e) => {
       const data = JSON.parse(e.data);

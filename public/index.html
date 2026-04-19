@@ -16,13 +16,22 @@
       <h2 id="form-title">Add game</h2>
       <form id="game-form">
         <input type="hidden" id="game-id" value="">
+        <p id="form-error" class="form-error hidden" role="alert"></p>
         <label>
           Game name
           <input type="text" id="game-name" required placeholder="e.g. Celeste">
         </label>
         <label>
           Platform
-          <input type="text" id="game-platform" required placeholder="e.g. PC, PlayStation">
+          <select id="game-platform" required>
+            <option value="">Select platform</option>
+            <option value="PS">PS</option>
+            <option value="PS2">PS2</option>
+            <option value="N64">N64</option>
+            <option value="SNES">SNES</option>
+            <option value="PC">PC</option>
+            <option value="DOS">DOS</option>
+          </select>
         </label>
         <div class="form-actions">
           <button type="submit" id="submit-btn">Add</button>
@@ -34,19 +43,23 @@
       <h2>Games</h2>
       <p class="table-notes">The wheel shows a random selection of 16 unplayed games each spin. When a game is selected it’s marked below.</p>
       <div class="filter-bar">
-        <label>Filter: <select id="filter-played">
+        <label>Search: <input type="text" id="filter-search" placeholder="Name or platform…" aria-label="Filter by name or platform"></label>
+        <label>Played: <select id="filter-played">
           <option value="">All</option>
           <option value="0">Not played</option>
           <option value="1">Played</option>
+        </select></label>
+        <label>Platform: <select id="filter-platform">
+          <option value="">All</option>
         </select></label>
       </div>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Platform</th>
-            <th>Played</th>
-            <th>Actions</th>
+            <th class="sortable" data-sort="name" scope="col">Name</th>
+            <th class="sortable" data-sort="platform" scope="col">Platform</th>
+            <th class="sortable" data-sort="played" scope="col">Played</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody id="games-tbody">

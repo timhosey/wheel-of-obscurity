@@ -2,15 +2,26 @@ const db = require('./init');
 
 function getAll(opts = {}) {
   let sql = 'SELECT id, name, platform, selected_at FROM games';
+  const conditions = [];
   const params = [];
   if (opts.played === true) {
-    sql += ' WHERE selected_at IS NOT NULL';
+    conditions.push('selected_at IS NOT NULL');
   } else if (opts.played === false) {
-    sql += ' WHERE selected_at IS NULL';
+    conditions.push('selected_at IS NULL');
   }
+  if (opts.platform) {
+    conditions.push('platform = ?');
+    params.push(opts.platform);
+  }
+  if (conditions.length) sql += ' WHERE ' + conditions.join(' AND ');
   sql += ' ORDER BY id';
   const stmt = db.prepare(sql);
   return stmt.all(...params);
+}
+
+function getDistinctPlatforms() {
+  const stmt = db.prepare('SELECT DISTINCT platform FROM games ORDER BY platform');
+  return stmt.all().map((row) => row.platform);
 }
 
 function getById(id) {
@@ -77,4 +88,5 @@ module.exports = {
   getRandomWheelGames,
   markSelected,
   markUnselected,
+  getDistinctPlatforms,
 };

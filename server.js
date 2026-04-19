@@ -20,10 +20,21 @@ const WHEEL_SIZE = 16;
 app.get('/api/games', (req, res) => {
   try {
     const played = req.query.played;
+    const platform = req.query.platform;
     const opts = {};
     if (played === '1') opts.played = true;
     else if (played === '0') opts.played = false;
+    if (platform) opts.platform = platform;
     const list = games.getAll(opts);
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/platforms', (req, res) => {
+  try {
+    const list = games.getDistinctPlatforms();
     res.json(list);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -155,7 +166,7 @@ app.post('/api/spin', (req, res) => {
   res.json(payload);
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Wheel of Obscurity running at http://localhost:${PORT}`);
   console.log(`  Management: http://localhost:${PORT}/`);
   console.log(`  Wheel (OBS): http://localhost:${PORT}/wheel.html`);

@@ -46,11 +46,52 @@ section h2 {
 
 .filter-bar {
   margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
 }
 
-.filter-bar select {
+.filter-bar label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.filter-bar select,
+.filter-bar input[type="text"] {
   padding: 6px 10px;
   font-size: 1rem;
+}
+
+.filter-bar input[type="text"] {
+  min-width: 140px;
+}
+
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+  padding-right: 1.4em;
+  position: relative;
+}
+
+th.sortable:hover {
+  text-decoration: underline;
+}
+
+th.sortable[aria-sort="ascending"]::after {
+  content: ' \2191';
+  position: absolute;
+  right: 4px;
+  font-size: 0.85em;
+}
+
+th.sortable[aria-sort="descending"]::after {
+  content: ' \2193';
+  position: absolute;
+  right: 4px;
+  font-size: 0.85em;
 }
 
 .played-cell {
@@ -63,13 +104,28 @@ section h2 {
   margin-bottom: 12px;
 }
 
-.form-section label input {
+.form-section label input,
+.form-section label select {
   display: block;
   width: 100%;
   max-width: 320px;
   padding: 8px 10px;
   margin-top: 4px;
   font-size: 1rem;
+}
+
+.form-error {
+  color: #c00;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+}
+
+.form-error.hidden {
+  display: none;
+}
+
+tr.row-highlight {
+  background: #ffe6e6;
 }
 
 .form-actions {

@@ -8,7 +8,7 @@ html, body {
   width: 1920px;
   height: 1080px;
   overflow: hidden;
-  background: #fff;
+  background: transparent;
   font-family: system-ui, sans-serif;
 }
 
@@ -27,7 +27,18 @@ html, body {
   font-weight: bold;
   text-align: center;
   min-height: 52px;
-  color: #333;
+  color: #fff;
+  text-shadow:
+    0 0 2px #000,
+    0 0 4px #000,
+    1px 0 0 #000,
+    -1px 0 0 #000,
+    0 1px 0 #000,
+    0 -1px 0 #000,
+    1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000;
   flex-shrink: 0;
 }
 
