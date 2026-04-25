@@ -142,7 +142,7 @@
     return div.innerHTML;
   }
 
-  const PLATFORMS = ['PS', 'PS2', 'N64', 'SNES', 'PC', 'DOS'];
+  const PLATFORMS = ['PS', 'PS2', 'N64', 'SNES', 'PC', 'DOS', 'Wii'];
 
   function setFormMode(mode, game = null) {
     clearFormError();
