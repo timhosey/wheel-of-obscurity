@@ -104,8 +104,9 @@ app.put('/api/games/:id/unplay', (req, res) => {
 });
 
 // --- Reset wheel with a specific game pool ---
-app.post('/api/wheel/reset', (req, res) => {
-  const { filter } = req.body || {};
+app.post('/api/wheel/reset', (req, res) => triggerReset((req.body || {}).filter, res));
+
+function triggerReset(filter, res) {
   const opts = {};
   if (filter === 'unplayed') opts.played = false;
   else if (filter === 'played') opts.played = true;
@@ -121,7 +122,7 @@ app.post('/api/wheel/reset', (req, res) => {
     } catch (_) {}
   });
   res.json({ games: list });
-});
+}
 
 // --- Spin: SSE stream ---
 app.get('/api/spin/stream', (req, res) => {
@@ -140,8 +141,13 @@ app.get('/api/spin/stream', (req, res) => {
   });
 });
 
+// --- Spin: trigger (GET alias for Stream Deck / URL-based triggers) ---
+app.get('/api/spin', (req, res) => triggerSpin(res));
+
 // --- Spin: trigger ---
-app.post('/api/spin', (req, res) => {
+app.post('/api/spin', (req, res) => triggerSpin(res));
+
+function triggerSpin(res) {
   const wheelList = games.getRandomWheelGames(WHEEL_SIZE, { played: false });
   if (wheelList.length === 0) {
     return res.status(400).json({ error: 'no games in database' });
@@ -164,7 +170,12 @@ app.post('/api/spin', (req, res) => {
   });
 
   res.json(payload);
-});
+}
+
+// --- Reset: GET aliases for Stream Deck / URL-based triggers ---
+app.get('/api/wheel/reset', (req, res) => triggerReset(req.query.filter, res));
+app.get('/api/wheel/reset/unplayed', (req, res) => triggerReset('unplayed', res));
+app.get('/api/wheel/reset/played', (req, res) => triggerReset('played', res));
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Wheel of Obscurity running at http://localhost:${PORT}`);
