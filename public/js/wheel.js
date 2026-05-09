@@ -99,13 +99,12 @@
       ctx.restore();
     }
 
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
-    ctx.arc(CENTER_X, CENTER_Y, 24, 0, 2 * Math.PI);
-    ctx.fillStyle = '#333';
+    ctx.arc(CENTER_X, CENTER_Y, 80, 0, 2 * Math.PI);
     ctx.fill();
-    ctx.strokeStyle = '#111';
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    ctx.restore();
   }
 
   function runSpinAnimation(targetSegmentIndex, totalSegments) {
